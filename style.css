@@ -1,0 +1,437 @@
+:root {
+  --primary-color: #1b5e20;
+  --primary-dark: #0d3811;
+  --accent-color: #4caf50;
+  --bg-color: #f4f6f8;
+  --card-bg: #ffffff;
+  --text-main: #333333;
+  --text-muted: #666666;
+  --border-color: #dcdcdc;
+  --hospital-blue: #1769aa;
+  --hospital-dark: #123b5d;
+  --hospital-teal: #16a6a0;
+  --hospital-light: #f3f7fb;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif, 'Segoe UI';
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Split Screen Layout */
+.portal-wrapper {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* Base Portal Banner with local image support */
+.portal-banner {
+  flex: 1;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 60px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Patient Portal local image background */
+.portal-banner.patient-bg {
+  background: url('images/patient.jpg') center/cover;
+}
+
+/* Staff Portal local image background */
+.portal-banner.staff-bg {
+  background: url('images/staff.jpg') center/cover;
+}
+
+.portal-banner h1 {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.portal-banner p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-width: 500px;
+  opacity: 0.95;
+}
+
+.portal-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  overflow-y: auto;
+  max-height: 100vh;
+  background: var(--hospital-light);
+}
+
+/* View Containers */
+.view-card {
+  width: 100%;
+  max-width: 480px;
+  display: none;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.view-card.active {
+  display: block;
+}
+
+/* Header Styling */
+.form-header {
+  margin-bottom: 24px;
+}
+
+.form-header h2 {
+  color: var(--hospital-dark);
+  font-size: 2.0rem;
+  margin-bottom: 8px;
+}
+
+.form-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Portal Toggle Tabs */
+.portal-tabs {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  background: #fdfdfd;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: var(--hospital-blue);
+  border-bottom: 3px solid var(--hospital-blue);
+}
+
+/* Form Elements */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-main);
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+  border-color: var(--hospital-blue);
+}
+
+.form-section {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #fafafa;
+}
+
+.form-section legend {
+  font-weight: 600;
+  color: var(--hospital-blue);
+  padding: 0 8px;
+  font-size: 0.95rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* Buttons */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--hospital-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.btn-submit:hover {
+  background-color: var(--hospital-dark);
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 12px;
+  background-color: #e0e0e0;
+  color: var(--text-main);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.auth-footer a {
+  color: var(--hospital-blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Success Card */
+.success-card {
+  text-align: center;
+  padding: 24px;
+  background-color: #f1f8e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+}
+
+.id-badge {
+  margin: 16px 0;
+  padding: 16px;
+  background: #ffffff;
+  border: 2px dashed var(--hospital-teal);
+  border-radius: 6px;
+}
+
+.id-badge strong {
+  display: block;
+  font-size: 1.6rem;
+  color: var(--hospital-blue);
+  margin-top: 6px;
+}
+
+/* Dashboard UI */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.dash-card {
+  background: #fafafa;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.dash-card h4 {
+  color: var(--hospital-blue);
+  margin-bottom: 10px;
+  font-size: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+}
+
+.dash-card p {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 900px) {
+  .portal-wrapper {
+    flex-direction: column;
+  }
+  .portal-banner {
+    padding: 30px;
+    min-height: 200px;
+  }
+}
+
+/* Staff sign-in page */
+.auth-page {
+  display: block;
+  background: var(--hospital-light);
+}
+
+.auth-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.auth-banner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(2rem, 6vw, 5rem);
+  color: #fff;
+  background:
+    linear-gradient(rgba(12, 35, 54, 0.3), rgba(12, 35, 54, 0.75)),
+    url('images/staff.jpg') center/cover no-repeat;
+}
+
+.auth-banner h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.auth-banner p {
+  max-width: 34rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.auth-panel {
+  width: min(100%, 34rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4rem);
+  background: #fff;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.06);
+}
+
+.auth-heading {
+  margin-bottom: 2rem;
+}
+
+.auth-heading h2 {
+  margin-bottom: 0.5rem;
+  color: var(--hospital-dark);
+  font-size: 2rem;
+}
+
+.auth-heading p {
+  color: var(--text-muted);
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.auth-field label {
+  font-weight: 600;
+}
+
+.auth-field input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.auth-field input:focus {
+  border-color: var(--hospital-blue);
+  outline: 3px solid rgba(23, 105, 170, 0.15);
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.85rem;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  background: var(--hospital-blue);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-submit:hover {
+  background: var(--hospital-dark);
+}
+
+.auth-submit:disabled {
+  cursor: wait;
+  opacity: 0.75;
+}
+
+.auth-error {
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  color: #842029;
+  background: #f8d7da;
+}
+
+@media (max-width: 800px) {
+  .auth-layout {
+    flex-direction: column;
+  }
+
+  .auth-banner {
+    min-height: 14rem;
+  }
+
+  .auth-panel {
+    width: 100%;
+    min-height: 60vh;
+  }
+}

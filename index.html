@@ -1,95 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kibiri Hospital HMIS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kibiri Hospital HMIS - Unified Portal</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<nav class="navbar navbar-dark hospital-navbar px-4 bg-primary">
-    <span class="navbar-brand fw-bold">
-        KIBIRI HOSPITAL HMIS
-    </span>
-    <!-- Logout button triggers JavaScript logout logic -->
-    <button id="logoutBtn" class="btn btn-outline-light btn-sm">
-        Logout
-    </button>
-</nav>
-
-<div class="container py-5">
-
-    <div class="mb-4">
-        <h2>Welcome, <span id="welcomeName">Loading...</span></h2>
-        <p class="text-muted">
-            Hospital Management Information System
-        </p>
+  <div class="portal-wrapper">
+    <!-- LEFT BANNER WITH DYNAMIC BACKGROUND -->
+    <div id="portalBanner" class="portal-banner patient-bg">
+      <h1 id="bannerTitle">Kibiri Hospital Patient Portal</h1>
+      <p id="bannerDesc">Access your personal health records, view lab results, view appointments and connect securely with your care team.</p>
     </div>
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-4">
+    <!-- RIGHT CONTAINER FOR VIEWS -->
+    <div class="portal-main">
 
-            <h4>System Access Successful</h4>
+      <!-- VIEW 1: PATIENT SIGN IN -->
+      <div id="patientLoginView" class="view-card active">
+        <div class="form-header">
+          <h2>Welcome Back</h2>
+          <p>Access your healthcare management dashboard</p>
+        </div>
 
-            <p>
-                You have successfully logged into
-                Kibiri Hospital HMIS.
-            </p>
+        <div class="portal-tabs">
+          <button type="button" class="tab-btn" onclick="switchPortalTab('staff')">Staff Portal</button>
+          <button type="button" class="tab-btn active" onclick="switchPortalTab('patient')">Patient Portal</button>
+        </div>
 
-            <p>
-                Your assigned role:
-                <strong id="userRole">Loading...</strong>
-            </p>
+        <form id="patientLoginForm" method="post" action="patient_login_process.php">
+          <div class="form-group">
+            <label for="patientIdentifier">Patient Email or ID</label>
+            <input type="text" id="patientIdentifier" name="identifier" placeholder="e.g., KBH-2026-0042 or email@gmail.com" required />
+          </div>
 
-            <p>
-                Your department:
-                <strong id="userDepartment">Loading...</strong>
-            </p>
+          <div class="form-group">
+            <label for="patientPassword">Password</label>
+            <input type="password" id="patientPassword" name="password" placeholder="Enter your password" required />
+          </div>
 
-            <div class="alert alert-info mb-0">
-                The main hospital modules will be introduced
-                progressively during development.
+          <button type="submit" class="btn-submit">Sign In as Patient &rarr;</button>
+        </form>
+
+        <div class="auth-footer">
+          New to Kibiri Hospital? <a href="#" onclick="switchView('registerView')">Register / Patient Intake</a>
+        </div>
+      </div>
+
+
+      <!-- VIEW 2: STAFF SIGN IN -->
+      <div id="staffLoginView" class="view-card">
+        <div class="form-header">
+          <h2>Staff Access</h2>
+          <p>Institutional login for administrators, medical officers, and staff</p>
+        </div>
+
+        <div class="portal-tabs">
+          <button type="button" class="tab-btn active" onclick="switchPortalTab('staff')">Staff Portal</button>
+          <button type="button" class="tab-btn" onclick="switchPortalTab('patient')">Patient Portal</button>
+        </div>
+
+        <form id="staffLoginForm" method="post" action="login.php">
+          <div class="form-group">
+            <label for="staffID">Staff ID / Username</label>
+            <input type="text" id="staffID" name="username" placeholder="e.g., KBH-ADMIN-01" required />
+          </div>
+
+          <div class="form-group">
+            <label for="staffPassword">Access Password</label>
+            <input type="password" id="staffPassword" name="password" placeholder="Enter staff password" required />
+          </div>
+
+          <button type="submit" class="btn-submit" style="background-color: var(--hospital-dark);">Sign In to Staff HMIS &rarr;</button>
+        </form>
+      </div>
+
+
+      <!-- VIEW 3: REGISTRATION / INTAKE FORM -->
+      <div id="registerView" class="view-card" style="max-width: 600px;">
+        <div class="form-header">
+          <h2>Patient Intake</h2>
+          <p>Complete your registration to get your official Patient ID</p>
+        </div>
+
+        <form id="patientIntakeForm" method="post" action="patient_register_process.php">
+          <fieldset class="form-section">
+            <legend>1. Personal Information</legend>
+            <div class="form-row">
+              <div class="form-group" style="flex:2;">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" name="full_name" placeholder="Sarah Namubiru" required />
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label for="dob">Date of Birth *</label>
+                <input type="date" id="dob" name="dob" required />
+              </div>
             </div>
 
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gender">Gender *</label>
+                <select id="gender" name="gender" required>
+                  <option value="">Select</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number *</label>
+                <input type="tel" id="phoneNumber" name="phone" placeholder="+256 700 000000" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="emailAddress">Email Address</label>
+              <input type="email" id="emailAddress" name="email" placeholder="sarah@gmail.com" required />
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>2. Portal Password</legend>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="regPassword">Create Password *</label>
+                <input type="password" id="regPassword" name="password" placeholder="Minimum 6 characters" minlength="6" required />
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password *</label>
+                <input type="password" id="confirmPassword" name="password_confirm" placeholder="Repeat password" minlength="6" required />
+              </div>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn-submit">Complete Registration &rarr;</button>
+        </form>
+
+        <div id="registrationSuccessCard" class="success-card" style="display: none;">
+          <h3>Registration Successful!</h3>
+          <p>Your official Kibiri Hospital HMIS Patient Record has been created.</p>
+          <div class="id-badge">
+            <span>Your Generated Patient ID:</span>
+            <strong id="displayPatientID">KBH-2026-0000</strong>
+          </div>
+          <button type="button" class="btn-submit" onclick="switchPortalTab('patient')">Proceed to Sign In Now</button>
         </div>
+
+        <div class="auth-footer">
+          Already registered? <a href="#" onclick="switchPortalTab('patient')">Sign In</a>
+        </div>
+      </div>
+
+
+      <!-- VIEW 4: PATIENT DASHBOARD -->
+      <div id="patientDashboardView" class="view-card" style="max-width: 700px;">
+        <div class="dashboard-header">
+          <div>
+            <h2 id="dashPatientName" style="color: var(--hospital-blue);">Welcome, Patient</h2>
+            <p id="dashPatientIDBadge" style="font-weight: 600; color: var(--text-muted);">KBH-2026-XXXX</p>
+          </div>
+          <button onclick="switchPortalTab('patient')" class="btn-secondary" style="width: auto; padding: 8px 16px; margin: 0;">Sign Out</button>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dash-card">
+            <h4>Latest Triage Vitals</h4>
+            <p><strong>Blood Pressure:</strong> 120/80 mmHg</p>
+            <p><strong>Temperature:</strong> 36.7 °C</p>
+            <p><strong>Heart Rate:</strong> 74 bpm</p>
+          </div>
+          <div class="dash-card">
+            <h4>Upcoming Appointments</h4>
+            <p><strong>Clinic:</strong> General Outpatient</p>
+            <p><strong>Doctor:</strong> Dr. Mukasa Paul</p>
+            <p><strong>Date:</strong> Nov 15, 2026 - 10:00 AM</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- VIEW 5: STAFF & ADMINISTRATOR DASHBOARD -->
+      <div id="staffDashboardView" class="view-card" style="max-width: 750px;">
+        <div class="dashboard-header">
+          <div>
+            <h2 id="dashStaffTitle" style="color: var(--hospital-dark);">Staff Control Dashboard</h2>
+            <p id="dashStaffRoleBadge" style="font-weight: 600; color: var(--text-muted);">Role: Staff</p>
+          </div>
+          <button onclick="switchPortalTab('staff')" class="btn-secondary" style="width: auto; padding: 8px 16px; margin: 0;">Sign Out</button>
+        </div>
+
+        <!-- Administrator Specific Control Panel -->
+        <div id="adminControlPanel" style="display: none; margin-bottom: 20px; background: #eef4f9; border: 1px solid #bce8f1; padding: 16px; border-radius: 8px;">
+          <h4 style="color: #31708f; margin-bottom: 8px;">🛡️ Administrator Management Panel</h4>
+          <p style="font-size: 0.9rem; margin-bottom: 10px;">Monitor hospital staff performance metrics and manage role permission rights across departments.</p>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-submit" style="padding: 8px; font-size: 0.85rem; background-color: #31708f;" onclick="alert('Viewing Staff Performance Metrics: 98% task completion rate across active clinical departments.')">View Staff Performance</button>
+            <button class="btn-submit" style="padding: 8px; font-size: 0.85rem; background-color: #2b542c;" onclick="alert('Access Rights Manager: Roles configured (Doctor, Nurse, Pharmacist, Receptionist).')">Manage System Rights</button>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dash-card">
+            <h4>Patient Triage Management</h4>
+            <p><strong>Active Queue:</strong> 8 Outpatients Waiting</p>
+            <p><strong>Emergency Cases:</strong> 0 High Priority</p>
+            <button class="btn-submit" style="padding: 8px; font-size: 0.85rem; margin-top: 10px;">Record New Patient Vitals</button>
+          </div>
+          <div class="dash-card">
+            <h4>Clinical Operations</h4>
+            <p><strong>EHR Lookup:</strong> Enter Patient ID</p>
+            <p><strong>Prescription Module:</strong> Pharmacy Sync Active</p>
+            <button class="btn-submit" style="background-color: var(--hospital-teal); padding: 8px; font-size: 0.85rem; margin-top: 10px;">Open Consultation Chart</button>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-</div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // 1. Authentication Check (Replacing auth_check.php)
-        // Check if user session data exists in localStorage
-        const userSession = JSON.parse(localStorage.getItem("hmis_user_session"));
+  <!-- JAVASCRIPT SWITCHING & AUTH LOGIC -->
+  <script>
+    function switchView(viewId) {
+      document.querySelectorAll('.view-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      document.getElementById(viewId).classList.add('active');
+    }
 
-        if (!userSession) {
-            // If not logged in, redirect to login page
-            alert("Unauthorized access. Please log in first.");
-            window.location.href = "login.html"; // Adjust to your login page
-            return;
+    function switchPortalTab(portalType) {
+      const banner = document.getElementById('portalBanner');
+      const bannerTitle = document.getElementById('bannerTitle');
+      const bannerDesc = document.getElementById('bannerDesc');
+
+      if (portalType === 'staff') {
+        banner.className = "portal-banner staff-bg"; // Switches to staff local image class
+        bannerTitle.innerText = "Kibiri Hospital Staff HMIS";
+        bannerDesc.innerText = "Internal clinical management console for patient registration, triage vitals, consultation records, and administrative rights.";
+        switchView('staffLoginView');
+      } else {
+        banner.className = "portal-banner patient-bg"; // Switches to patient local image class
+        bannerTitle.innerText = "Kibiri Hospital Patient Portal";
+        bannerDesc.innerText = "Access your personal health records, view lab results, view appointments and connect securely with your care team.";
+        switchView('patientLoginView');
+      }
+    }
+
+    function handleStaffSignIn(event) {
+      event.preventDefault();
+      const role = document.getElementById('staffRole').value;
+      const staffID = document.getElementById('staffID').value.trim();
+      const password = document.getElementById('staffPassword').value;
+
+      if (staffID && password) {
+        document.getElementById('dashStaffTitle').innerText = `Welcome, ${role.toUpperCase()} (${staffID})`;
+        document.getElementById('dashStaffRoleBadge').innerText = `Assigned Role: ${role.toUpperCase()}`;
+
+        const adminPanel = document.getElementById('adminControlPanel');
+        if (role === 'administrator') {
+          adminPanel.style.display = 'block';
+        } else {
+          adminPanel.style.display = 'none';
         }
 
-        // 2. Populate User Data (Replacing PHP echo $_SESSION statements)
-        document.getElementById("welcomeName").textContent = userSession.full_name || "User";
-        document.getElementById("userRole").textContent = userSession.role_name || "Unassigned";
-        document.getElementById("userDepartment").textContent = userSession.department_name || "Unassigned";
+        switchView('staffDashboardView');
+      } else {
+        alert("Please enter valid Staff credentials.");
+      }
+    }
 
-        // 3. Logout Handling (Replacing logout.php link)
-        document.getElementById("logoutBtn").addEventListener("click", (e) => {
-            e.preventDefault();
-            
-            // Clear the local session storage
-            localStorage.removeItem("hmis_user_session");
-            
-            // Redirect to login page
-            window.location.href = "login.html";
-        });
-    });
-</script>
+  </script>
 
 </body>
 </html>

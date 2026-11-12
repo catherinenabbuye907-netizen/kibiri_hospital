@@ -50,7 +50,7 @@
       </div>
 
 
-      <!-- VIEW 2: STAFF SIGN IN -->
+      <!-- VIEW 2: STAFF SIGN IN (Updated to Match Reference Design) -->
       <div id="staffLoginView" class="view-card">
         <div class="form-header">
           <h2>Staff Access</h2>
@@ -62,15 +62,27 @@
           <button type="button" class="tab-btn" onclick="switchPortalTab('patient')">Patient Portal</button>
         </div>
 
-        <form id="staffLoginForm" method="post" action="login.php">
+        <form id="staffLoginForm" method="post" action="login.php" onsubmit="handleStaffSignIn(event)">
           <div class="form-group">
-            <label for="staffID">Staff ID / Username</label>
-            <input type="text" id="staffID" name="username" placeholder="e.g., KBH-ADMIN-01" required />
+            <label for="staffID">Staff ID / Username or Email</label>
+            <input type="text" id="staffID" name="username" placeholder="e.g., admin or staff@kibirihospital.local" required />
           </div>
 
           <div class="form-group">
             <label for="staffPassword">Access Password</label>
             <input type="password" id="staffPassword" name="password" placeholder="Enter staff password" required />
+          </div>
+
+          <div class="form-group">
+            <label for="staffDepartment">Select Department / Station</label>
+            <select id="staffDepartment" name="department" required>
+              <option value="">-- Choose Working Department --</option>
+              <option value="Administration">Administration</option>
+              <option value="Billing & Cashier">Billing & Cashier</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Laboratory">Laboratory</option>
+              <option value="Pharmacy">Pharmacy</option>
+            </select>
           </div>
 
           <button type="submit" class="btn-submit" style="background-color: var(--hospital-dark);">Sign In to Staff HMIS &rarr;</button>
@@ -174,7 +186,7 @@
           <div class="dash-card">
             <h4>Upcoming Appointments</h4>
             <p><strong>Clinic:</strong> General Outpatient</p>
-            <p><strong>Doctor:</strong> Dr. Mukasa Paul</p>
+            <p><strong>Doctor:</strong> Dr. Catherine Nabbuye</p>
             <p><strong>Date:</strong> Nov 15, 2026 - 10:00 AM</p>
           </div>
         </div>
@@ -236,12 +248,12 @@
       const bannerDesc = document.getElementById('bannerDesc');
 
       if (portalType === 'staff') {
-        banner.className = "portal-banner staff-bg"; // Switches to staff local image class
+        banner.className = "portal-banner staff-bg";
         bannerTitle.innerText = "Kibiri Hospital Staff HMIS";
         bannerDesc.innerText = "Internal clinical management console for patient registration, triage vitals, consultation records, and administrative rights.";
         switchView('staffLoginView');
       } else {
-        banner.className = "portal-banner patient-bg"; // Switches to patient local image class
+        banner.className = "portal-banner patient-bg";
         bannerTitle.innerText = "Kibiri Hospital Patient Portal";
         bannerDesc.innerText = "Access your personal health records, view lab results, view appointments and connect securely with your care team.";
         switchView('patientLoginView');
@@ -250,16 +262,16 @@
 
     function handleStaffSignIn(event) {
       event.preventDefault();
-      const role = document.getElementById('staffRole').value;
+      const department = document.getElementById('staffDepartment').value;
       const staffID = document.getElementById('staffID').value.trim();
       const password = document.getElementById('staffPassword').value;
 
-      if (staffID && password) {
-        document.getElementById('dashStaffTitle').innerText = `Welcome, ${role.toUpperCase()} (${staffID})`;
-        document.getElementById('dashStaffRoleBadge').innerText = `Assigned Role: ${role.toUpperCase()}`;
+      if (staffID && password && department) {
+        document.getElementById('dashStaffTitle').innerText = `Welcome, ${staffID.toUpperCase()}`;
+        document.getElementById('dashStaffRoleBadge').innerText = `Department: ${department}`;
 
         const adminPanel = document.getElementById('adminControlPanel');
-        if (role === 'administrator') {
+        if (department === 'Administration') {
           adminPanel.style.display = 'block';
         } else {
           adminPanel.style.display = 'none';
@@ -267,10 +279,9 @@
 
         switchView('staffDashboardView');
       } else {
-        alert("Please enter valid Staff credentials.");
+        alert("Please fill in all staff login credentials and select your department.");
       }
     }
-
   </script>
 
 </body>
